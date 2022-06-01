@@ -68,12 +68,14 @@ export default {
     formSubmit() {
       try {
         if(this.form.firstName){ // first name check
-          this.checkName(this.form.firstName)
+          let element = document.getElementById('firstName')
+          this.checkName(this.form.firstName, element)
         } else {
           throw "First Name field is a required."
         }
         if (this.form.lastName) { // check last name
-          this.checkName(this.form.lastName)
+          let element = document.getElementById('lastName')
+          this.checkName(this.form.lastName, element)
         } else {
           throw "Last Name field is required."
         }
@@ -96,10 +98,10 @@ export default {
               alert(error)
             })
       }
-
     },
     checkFacilitator() {
       let validInput = false;
+      let element = document.getElementById('facilitator')
       for (let i = 0; i < this.facilitators.length; i++) {
         // deal with whitespace chars, initially had array as facilitators first and last like "Josh Hanson" etc.
         if (this.form.facilitator.toLowerCase().replace(/\s+/g, "")
@@ -110,12 +112,25 @@ export default {
       if (!validInput) {
         //throw "Invalid Facilitator"
         this.formErrors.push("Invalid Facilitator")
+        this.highlightBad(element)
+      } else {
+        this.highlightGood(element)
       }
     },
-    checkName(name) {
+    checkName(name, element) {
       if(!(/^[a-zA-Z]{2,}$/.test(name))){
-        this.formErrors.push("Invalid Name - Name Rules: i. minimum length of two (2) characters ii. only alpha chars (a-zA-Z)")
+        this.formErrors.push(
+            "Invalid Name - Name Rules: i. minimum length of two (2) characters ii. only alpha chars (a-zA-Z)")
+        this.highlightBad(element)
+      } else {
+        this.highlightGood(element)
       }
+    },
+    highlightBad(element) {
+      element.style.border = "2px solid red";
+    },
+    highlightGood(element) {
+      element.style.border = "2px solid green";
     }
   }
 }
