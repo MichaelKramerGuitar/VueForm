@@ -7,13 +7,12 @@
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld.vue'
+
 import MyForm from "@/components/MyForm";
 export default {
   name: 'App',
   components: {
     MyForm
-    //HelloWorld
   }
 }
 </script>

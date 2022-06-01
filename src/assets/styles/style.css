@@ -1,0 +1,23 @@
+
+.bar {
+
+    color: darkred;
+    padding: 1rem;
+}
+/*.error {*/
+/*    color: #ba3939;*/
+/*    background: #ffe0e0;*/
+/*    border: 1px solid #a33a3a;*/
+/*}*/
+/*ol {*/
+/*    position: relative;*/
+/*    background: #ff9999;*/
+/*    padding: 20px;*/
+/*}*/
+
+.error{
+    position: center;
+    background: #ffe5e5;
+    /*margin-left: 4rem;*/
+    text-align: left;
+}
