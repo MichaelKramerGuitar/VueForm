@@ -21,3 +21,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Boston University Assignment Guidelines
+metcs601_assignment4.pdf
