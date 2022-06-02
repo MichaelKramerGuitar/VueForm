@@ -1,4 +1,7 @@
 
+* {
+    text-align: left;
+}
 .bar {
 
     color: darkred;
@@ -21,3 +24,4 @@
     /*margin-left: 4rem;*/
     text-align: left;
 }
+

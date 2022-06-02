@@ -1,11 +1,11 @@
 <template>
   <form v-on:submit.prevent="formSubmit">
     <label for="firstName">First name: </label>
-    <input type="text" id="firstName" name="firstName" v-model="form.firstName"><br><br>
+    <input type="text" id="firstName" name="firstName" v-model="form.firstName" required><br><br>
     <label for="lastName">Last name: </label>
-    <input type="text" id="lastName" name="lastName" v-model="form.lastName"><br><br>
+    <input type="text" id="lastName" name="lastName" v-model="form.lastName" required><br><br>
     <label for="facilitator">Facilitator: </label>
-    <input type="text" id="facilitator" name="facilitator" v-model="form.facilitator"><br><br>
+    <input type="text" id="facilitator" name="facilitator" v-model="form.facilitator" required><br><br>
     <fieldset>
       <legend>Select Term:</legend>
       <label for="term1">Summer 1, 2022</label>
@@ -58,7 +58,8 @@ export default {
         lastName: '',
         facilitator: '',
         term: '',
-        program: []
+        program: [],
+
       },
       facilitators: ["Josh Hanson", "Fazil Harroon", "Christian Hur"],
       formErrors: []
@@ -89,14 +90,23 @@ export default {
       }
       if (!this.formErrors.length) { // if no errors in the form
         let url = 'https://bucs601.com/submit.php'
-        axios.post(url, this.form)
-            .then((res) => {
-              alert('form submitted ' + res)
-              //window.location = url
-            })
-            .catch((error) => {
-              alert(error)
-            })
+        const FormData = require('form-data');
+        let bodyFormData = new FormData();
+        bodyFormData.append('firstName', this.form.firstName)
+        bodyFormData.append('lastName', this.form.lastName)
+        bodyFormData.append('facilitator', this.form.facilitator)
+        axios({
+          method: "post",
+          url: url,
+          data: bodyFormData,
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then(function(res){
+          alert('form submitted ' + res)
+        })
+        .catch(function(error) {
+          alert(error);
+        });
       }
     },
     checkFacilitator() {
@@ -131,6 +141,16 @@ export default {
     },
     highlightGood(element) {
       element.style.border = "2px solid green";
+    }
+  },
+  computed: {
+    axiosParams() {
+      const FormData = require('form-data');
+      const form = new FormData();
+      form.append('firstName', this.form.firstName);
+      form.append('lastName', this.form.lastName);
+      form.append('facilitator', this.form.facilitator)
+      return form;
     }
   }
 }
