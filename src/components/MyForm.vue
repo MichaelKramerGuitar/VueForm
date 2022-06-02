@@ -1,5 +1,5 @@
 <template>
-  <form v-on:submit.prevent="formSubmit">
+  <form v-on:submit.prevent="formSubmit" action="https://bucs601.com/submit.php" method="post">
     <label for="firstName">First name: </label>
     <input type="text" id="firstName" name="firstName" v-model="form.firstName" required><br><br>
     <label for="lastName">Last name: </label>
@@ -33,7 +33,6 @@
         </ol>
       </div>
     </fieldset>
-
     <input type="submit" value="Send form data!">
       <div class="bar" v-if="formErrors.length">
         <b>Please correct the following error(s):</b>
@@ -43,7 +42,6 @@
       </div>
   </form>
 </template>
-
 <script>
 
 import axios from 'axios';
@@ -67,6 +65,7 @@ export default {
   },
   methods: {
     formSubmit() {
+      this.formErrors = []
       try {
         if(this.form.firstName){ // first name check
           let element = document.getElementById('firstName')
@@ -103,10 +102,23 @@ export default {
         })
         .then(function(res){
           alert('form submitted ' + res)
+          console.log(res)
+          //window.location = res.request.responseURL
+
         })
         .catch(function(error) {
           alert(error);
         });
+        // reset form
+        this.form.firstName = ''
+        this.form.lastName = ''
+        this.form.facilitator = ''
+        this.form.term = ''
+        this.form.program = []
+        let inputTags = document.getElementsByTagName('input')
+        for (let i = 0; i < inputTags.length; i++) {
+          inputTags[i].style.border = "none"; // reset input tags style
+        }
       }
     },
     checkFacilitator() {
@@ -141,16 +153,6 @@ export default {
     },
     highlightGood(element) {
       element.style.border = "2px solid green";
-    }
-  },
-  computed: {
-    axiosParams() {
-      const FormData = require('form-data');
-      const form = new FormData();
-      form.append('firstName', this.form.firstName);
-      form.append('lastName', this.form.lastName);
-      form.append('facilitator', this.form.facilitator)
-      return form;
     }
   }
 }
