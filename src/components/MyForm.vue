@@ -1,5 +1,12 @@
 <template>
-  <form v-on:submit.prevent="formSubmit" action="https://bucs601.com/submit.php" method="post">
+
+  <form @click="formSubmit" action="https://bucs601.com/submit.php" method="post">
+    <div class="bar" v-if="formErrors.length">
+      <b>Please correct the following error(s):</b>
+      <ol>
+        <li class="bar error" v-for="err in formErrors" :key="err">{{ err }}</li>
+      </ol>
+    </div>
     <label for="firstName">First name: </label>
     <input type="text" id="firstName" name="firstName" v-model="form.firstName" required><br><br>
     <label for="lastName">Last name: </label>
@@ -16,7 +23,7 @@
       <input type="radio" id ="term3" v-model="form.term" value="Fall 1, 2022"><br>
       <label for="term3">Fall 2, 2022</label>
       <input type="radio" id ="term4" v-model="form.term" value="Fall 2, 2022"><br>
-      <span v-if="form.term">Selected Term: {{ form.term }}</span>
+      <span v-if="form.term"><b>Selected Term: {{ form.term }}</b></span>
     </fieldset>
     <fieldset>
       <legend>Select Program:</legend>
@@ -29,23 +36,15 @@
       <div v-if="form.program.length">
         <b>Selected Program(s):</b>
         <ol>
-          <li v-for="prog in form.program" :key="prog">{{ prog }}</li>
+          <b><li v-for="prog in form.program" :key="prog">{{ prog }}</li></b>
         </ol>
       </div>
     </fieldset>
     <input type="submit" value="Send form data!">
-      <div class="bar" v-if="formErrors.length">
-        <b>Please correct the following error(s):</b>
-        <ol>
-          <li class="bar error" v-for="err in formErrors" :key="err">{{ err }}</li>
-        </ol>
-      </div>
+
   </form>
 </template>
 <script>
-
-import axios from 'axios';
-//https://vuelidate-next.netlify.app/#installation
 
 export default {
   name: "MyForm",
@@ -64,7 +63,7 @@ export default {
     }
   },
   methods: {
-    formSubmit() {
+    formSubmit(e) {
       this.formErrors = []
       try {
         if(this.form.firstName){ // first name check
@@ -88,38 +87,9 @@ export default {
         this.formErrors.push(error);
       }
       if (!this.formErrors.length) { // if no errors in the form
-        let url = 'https://bucs601.com/submit.php'
-        const FormData = require('form-data');
-        let bodyFormData = new FormData();
-        bodyFormData.append('firstName', this.form.firstName)
-        bodyFormData.append('lastName', this.form.lastName)
-        bodyFormData.append('facilitator', this.form.facilitator)
-        axios({
-          method: "post",
-          url: url,
-          data: bodyFormData,
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then(function(res){
-          alert('form submitted ' + res)
-          console.log(res)
-          //window.location = res.request.responseURL
-
-        })
-        .catch(function(error) {
-          alert(error);
-        });
-        // reset form
-        this.form.firstName = ''
-        this.form.lastName = ''
-        this.form.facilitator = ''
-        this.form.term = ''
-        this.form.program = []
-        let inputTags = document.getElementsByTagName('input')
-        for (let i = 0; i < inputTags.length; i++) {
-          inputTags[i].style.border = "none"; // reset input tags style
-        }
+        return true;
       }
+      e.preventDefault();
     },
     checkFacilitator() {
       let validInput = false;
