@@ -12,7 +12,7 @@
 }
 
 .error{
-    position: center;
+    position: relative;
     background: #ffe5e5;
     /*margin-left: 4rem;*/
     text-align: left;
