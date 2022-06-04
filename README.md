@@ -145,4 +145,5 @@ let url = 'https://bucs601.com/submit.php'
 #### Note: 
 My valid facilitators are "firstName'*space*'lastName" format:
 ```javascript
-facilitators: ["Josh Hanson", "Fazil Harroon", "Christian Hur"]```
+facilitators: ["Josh Hanson", "Fazil Harroon", "Christian Hur"]
+```
